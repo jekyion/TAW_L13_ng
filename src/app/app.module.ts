@@ -16,6 +16,15 @@ import { BlogHomeComponent } from './components/blog-home/blog-home.component';
 import { FilterTextPipe } from './pipes/filter-text.pipe';
 import { TextFormatDirective } from './directives/text-format.directive';
 import {FormsModule} from "@angular/forms";
+import { HomeComponent } from './components/home/home.component';
+import {RouterModule} from "@angular/router";
+import {AuthService} from "./services/auth.service";
+import {HTTP_INTERCEPTORS} from '@angular/common/http';
+import {AuthInterceptor} from './services/auth/auth.interceptor';
+import { LoginComponent } from './components/login/login.component';
+import { SignupComponent } from './components/signup/signup.component';
+import { NavbarComponent } from './components/navbar/navbar.component';
+
 
 @NgModule({
   declarations: [
@@ -31,15 +40,27 @@ import {FormsModule} from "@angular/forms";
     FilterTextPipe,
     TextFormatDirective,
     TextFormatDirective,
+    HomeComponent,
+    LoginComponent,
+    SignupComponent,
+    NavbarComponent,
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    BrowserModule
+
   ],
   providers: [
-    DataService
+    DataService,
+    AuthService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true
+    },
   ],
   bootstrap: [AppComponent]
 })
